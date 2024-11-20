@@ -1,0 +1,757 @@
+:root{
+  --color-grey:#E8E8E6;
+  --color-green: #AABBB8;
+  --color-blue: #798EA7;
+  --color-darkblue:#202945;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat";
+}
+
+html, body{
+  overflow-y: scroll;
+  overflow-x: hidden;  
+}
+
+body{
+    margin: auto;
+    position: relative;
+}
+
+header{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 110px;
+    width: 100%;
+    padding-right: 60px;
+    padding-left: 15px;
+    margin-left: 0px;
+    margin-right: 0;
+  }
+
+  #logo{
+    width: 220px;
+  }
+  
+  .icon i{
+    color: black;
+    font-size: 25px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    z-index: 999;
+  }
+
+  .icon{
+    cursor: pointer;
+    z-index: 4;
+  }
+
+  #perfil{
+    margin-right: 10px;
+  }
+  
+  #carrinho{
+    padding-right: 5px;
+  }
+
+
+  .parte_um{
+    background-color: var(--color-green);
+    height: 700px;
+    margin-bottom: 100px;
+  }
+
+.div_escrita{
+    display: grid;
+    align-items: center;
+    padding: 15%;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+}
+  
+.escrita_um { 
+    color: white;
+    font-weight:700;
+    text-transform: uppercase;
+    font-size: 35px;
+    
+}
+.ola_escrita{
+  display: inline-flex;
+}
+
+.escrita_dois  {
+    color: white; 
+    font-size: 25px;    
+}     
+
+#manikin{
+    position: absolute;
+    display: flex;
+    width: 659px;
+    top: 51px;
+    left: 60%;
+}
+
+.parte_dois{
+  padding-top: 80px;
+  height: 550px;
+  background-color: var(--color-green);
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+
+.space{
+  z-index: -4;
+}
+
+.camisa {
+  width: 600px;
+  display: flex; 
+  position: absolute;
+  border-radius: 15px;
+  margin-top: -8%;
+  margin-left: 200px;
+}
+
+  .lbl_camiseta{
+    color: black;
+    font-family: "Montserrat";
+    font-weight: bolder;
+    font-size: 17px;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  
+  .botoes {
+    top: 78%;
+    left: 70%;
+    color: #E8E8E6;
+    display: inline-table;
+    position: absolute;
+  }
+
+  a{
+    text-decoration: none;
+  }
+  
+  #camiseta, #curso{
+    border: none;
+    border-radius: 20px;
+    width: 220px;
+    height: 40px;
+    cursor: pointer;
+  }
+  
+  .seta{
+    width: 12px;
+    height: 12px;
+    transform: rotate(180deg);
+  }
+  
+  .letras{ 
+    font-size: 35px;
+    font-family: "Montserrat";
+    font-weight: bolder;
+    color: black;
+    letter-spacing: 2px;
+  }
+  
+    .wrapper {
+      max-width: 100%;
+      position: absolute;
+      top: 72%;
+    }
+    
+    #marquee, #marquee_dois, #marquee_tres {
+      white-space: nowrap;
+      display: inline-block;
+      animation: marquee 55s linear infinite;
+    }
+  
+    #marquee_dois{
+      animation: marquee_dois 55s linear infinite;
+    }
+  
+    #marquee_tres {
+      animation: marquee_tres 55s linear infinite;
+  
+    }
+    
+    #marquee p, #marquee_dois p, #marquee_tres p {
+      display: inline-block;
+    }
+    
+    @keyframes marquee {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+  
+    @keyframes marquee_dois {
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+      0% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+  
+    @keyframes marquee_tres {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+  
+    footer {
+      padding-top: 60px;
+      height: 100px;
+      text-align: center;
+      align-items: center;
+      align-content: center;
+      width: 100%;
+      padding-bottom: 10px;
+    }
+  
+    .desenvolvedoras{
+      font-weight: bold;
+    }
+
+    .link-desenvolvedoras{
+      font-style: italic
+    }
+
+    .link-desenvolvedoras:link{
+      color:black;
+      }
+      
+    .link-desenvolvedoras:visited{
+      color:black;
+      }
+      
+    .link-desenvolvedoras:hover{
+      background-color: var(--color-blue);
+      border-radius: 5px;
+      }
+      
+    .link-desenvolvedoras:active{
+      color:black;
+      }
+
+      @media screen and (max-width: 425px) {
+        html, body{
+            overflow-x: hidden;
+            overflow: scroll;
+        }
+
+        header{
+            padding-right: 20px;
+            padding-left: 5px;
+        }
+        
+        #logo{
+            width: 150px;
+        }
+
+        #perfil,#carrinho{
+            font-size: 20px;
+        }
+
+        .parte_um{
+          width:100%;
+          height: 225px;
+          justify-content: space-between;
+        }
+
+        .escrita_um{
+          font-size: 20px;
+          left: 20px;
+          font-weight: 800;
+        }
+
+        .escrita_dois{
+          font-size: 11px;
+          font-weight: 600;          
+          width: 160px;
+          padding-top: 5px;
+        }
+
+        .ola_escrita{
+          display: grid;
+        }
+
+        .div_escrita{
+          padding: 2%;
+          padding-top: 10%;
+        }
+
+        #manikin{
+          width: 235px;
+          position: absolute;
+          left: 45%;
+          top: 64px;
+        }
+
+        .parte_dois{
+          padding-top: 30px;
+          width: 100%;
+          height: 500px;
+          align-content: start;
+          justify-content: center;
+          display: grid;
+        }
+
+        #text-path{
+          width: 100%;
+          font-size: 100px;
+        }
+
+        #curve{
+          width: 100%;
+        }
+
+        #text-container{
+          width: 100%;
+        }
+
+        .space{
+          height: 300px;
+          width: 100%;
+        }
+
+        svg{
+          font-size: 30px;
+        }
+
+        #text-container{
+          height: 100px;
+        }
+
+        .foto{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          align-content: center;
+          margin-bottom: 20px;
+        }
+
+        .camisa{
+          width: 300px;
+          margin: 0;
+          padding: 0;
+          position: relative;
+        }
+
+        .botoes{
+          left: 0%;
+          margin-top: 10px;
+          margin-left: 20%;
+        }
+
+        #camiseta, #curso{
+          width: 200px;
+          height: 30px;
+        }
+
+        .lbl_camiseta{
+          font-size: 15px;
+        } 
+    }
+
+    @media screen and (min-width: 425px) and (max-width: 499px) {
+      html, body{
+        overflow-x: hidden;
+        overflow: scroll;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 150px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 21px;
+    }
+
+    .parte_um{
+      width:100%;
+      height: 280px;
+    }
+
+    .escrita_um{
+      font-size: 21px;
+      left: 20px;
+    }
+
+    .escrita_dois{
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    .div_escrita{
+      padding: 2%;
+      padding-top: 10%;
+    }
+
+    #manikin{
+      width: 282px;
+      position: absolute;
+      left: 25%;
+      top: 65px;
+      left: 40%;
+    }
+
+    .parte_dois{
+      padding-top: 30px;
+      width: 100%;
+      height: 570px;
+      align-content: start;
+      justify-content: center;
+      display: grid;
+    }
+
+    #text-path{
+      width: 100%;
+      font-size: 100px;
+    }
+
+    #curve{
+      width: 100%;
+    }
+
+    #text-container{
+      width: 100%;
+    }
+
+    .space{
+      height: 300px;
+      width: 100%;
+    }
+
+    svg{
+      font-size: 30px;
+    }
+
+    #text-container{
+      height: 100px;
+    }
+
+    .foto{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      margin-bottom: 20px;
+    }
+
+    .camisa{
+      width: 400px;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .botoes{
+      left: 0%;
+      margin-top: 10px;
+      margin-left: 25%;
+    }
+
+    #camiseta, #curso{
+      width: 200px;
+      height: 30px;
+    }
+
+    .lbl_camiseta{
+      font-size: 15px;
+    } 
+    }
+
+    @media screen and (min-width: 499px) and (max-width:768px) {
+      html, body{
+        overflow-x: hidden;
+      }
+
+      header{
+          padding-right: 20px;
+          padding-left: 5px;
+      }
+      
+      #logo{
+          width: 200px;
+      }
+
+      #perfil,#carrinho{
+          font-size: 22px;
+      }
+
+      .parte_um{
+        width:100%;
+        height: 400px;
+      }
+
+      .escrita_um{
+        font-size: 30px;
+        left: 20px;
+        font-weight: 800;
+      }
+
+      .escrita_dois{
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .div_escrita{
+        padding: 2%;
+        padding-left: 5%;
+        padding-top: 10%;
+        
+      }
+
+      #manikin{
+        width: 400px;
+        position: absolute;
+        left: 50%;
+        top: 50px;  
+       }
+
+      .parte_dois{
+        padding-top: 0px;
+        width: 100%;
+        height: 500px;
+        justify-content: center;
+      }
+
+      .botoes{
+        top: 75%;
+      }
+
+      #text-path{
+        font-size: 70px;
+      }
+
+      .space{
+        height: 200px;
+      }
+
+      .camisa {
+        width: 500px;
+        display: flex; 
+        position: absolute;
+        border-radius: 15px;
+        top: 62%;
+        margin-left: 30px;
+      }
+
+      #camiseta, #curso{
+        width: 200px;
+        height: 30px;
+      }
+
+      .lbl_camiseta{
+        font-size: 15px;
+      } 
+  }
+
+  @media screen and (min-width: 768px) and (max-width:1024px) {
+    html, body{
+      overflow-x: hidden;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 220px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 22px;
+    }
+
+    .parte_um{
+      width:100%;
+      height: 400px;
+    }
+
+    .escrita_um{
+      font-size: 30px;
+      left: 20px;
+      font-weight: 800;
+    }
+
+    .escrita_dois{
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .div_escrita{
+      padding: 2%;
+      padding-left: 5%;
+      padding-top: 10%;
+      
+    }
+
+    #manikin{
+      width: 400px;
+      position: absolute;
+      left: 52%;
+      top: 50px;  
+     }
+
+    .parte_dois{
+      padding-top: 0px;
+      width: 100%;
+      height: 500px;
+      justify-content: center;
+    }
+
+    #camiseta, #curso{
+      height: 40px;
+    }
+
+    .botoes{
+      top: 75%;
+    }
+
+    #text-path{
+      font-size: 60px;
+    }
+
+    .space{
+      height: 200px;
+    }
+
+    .camisa {
+      width: 550px;
+      display: flex; 
+      position: absolute;
+      border-radius: 15px;
+      top: 62%;
+      margin-left: 30px;
+    }
+
+    #camiseta, #curso{
+      width: 200px;
+      height: 30px;
+    }
+
+    .lbl_camiseta{
+      font-size: 15px;
+    } 
+}
+   
+    @media screen and (min-width: 1800px) and (max-width:2100px) {
+
+        header{
+            padding-right: 20px;
+            padding-left: 5px;
+        }
+        
+        #logo{
+            width: 250px;
+        }
+
+        #perfil,#carrinho{
+            font-size: 30px;
+        }
+
+        .parte_dois{
+          height: 750px;
+        }
+
+        .camisa{
+          width: 800px;
+          margin: 5%;
+          top: 55%;
+        }
+
+        .seta{
+          width: 20px;
+          height: 20px;
+        }
+
+        #camiseta, #curso{
+          height: 50px;
+          width: 300px;
+        }
+
+        .lbl_camiseta{
+          font-size: 25px;
+        }
+    }
+
+    @media screen and (min-width: 2200px){
+        header{
+            padding-right: 20px;
+            padding-left: 5px;
+            height: 150px;
+        }
+        
+        #logo{
+            width: 350px;
+        }
+
+        #perfil,#carrinho{
+            font-size: 40px;
+        }
+
+        .parte_um{
+          height: 1000px;
+        }
+
+        .escrita_um{
+          font-size: 60px;
+        }
+
+        .escrita_dois{
+          font-size: 40px;
+        }
+
+        #manikin{
+          width: 953px;
+        }
+        
+        .parte_dois{
+          height: 800px;
+        }
+
+        .camisa{
+          width: 930px;
+        }
+
+        #camiseta, #curso{
+          height: 55px;
+          width: 350px;
+          border-radius: 25px;
+        }
+
+        .seta{
+          width: 20px;
+          height: 20px;
+        }
+
+        .lbl_camiseta{
+          font-size: 30px;
+        }
+    }

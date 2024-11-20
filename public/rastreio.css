@@ -1,0 +1,518 @@
+:root{
+    --color-grey:#E8E8E6;
+    --color-green: #AABBB8;
+    --color-blue: #798EA7;
+    --color-darkblue:#202945;
+}
+  
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat";
+}
+  
+body{
+    margin: auto;
+    position: relative;
+}
+
+header{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 110px;
+    width: 100%;
+    padding-right: 60px;
+    padding-left: 15px;
+    margin-left: 0px;
+    margin-right: 0;
+  }
+
+  #logo{
+    width: 220px;
+  }
+  
+  .icon i{
+    color: black;
+    font-size: 25px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    z-index: 999;
+  }
+
+  .icon{
+    cursor: pointer;
+    z-index: 4;
+  }
+
+  #perfil{
+    margin-right: 10px;
+  }
+  
+  #carrinho{
+    padding-right: 5px;
+}
+
+
+main{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.lbl_status{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 400;
+} 
+
+.rastreio{
+    margin-top: 50px;
+    margin-left: 330px;
+    width: 100%;
+    justify-content: left;
+}
+
+.cod{
+    width: 300px;
+    height: 100px;
+    align-content: center;
+    border-radius: 15px;
+    background-color: var(--color-grey);
+    text-align: center;
+}
+
+.lbl_cod{
+    font-size: 15px;
+}
+
+#cod{
+    font-weight: bold;
+    font-size: 27px;
+}
+
+.bloco_estimativa{
+    margin-top: 100px;
+    width: fit-content;
+    position: absolute;
+    right: 5px;
+    margin-right: 100px;
+    top: 150px;
+}
+
+.estimativa{
+    text-align: center;
+    width: fit-content;
+}
+
+.lbl_estimativa{
+    text-transform: uppercase;
+    font-size: 27px;
+}
+
+#estimativa{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.wrapper{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    margin-left: 130px;
+    margin-top: 60px;
+}
+
+.progress-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.progress-container::after{
+    content: "";
+    position: absolute;
+    height: 10px;
+    top: 31%;
+    width: 90%;
+    left: 2rem;
+    background-color: var(--color-grey);
+    z-index: 0;
+}
+
+.progress{
+    position: absolute;
+    left: 0;
+    height: 10px;
+    top: 39%;
+    width: 0;
+    transform: translateY(-50%);
+    left: 2rem;
+    background-color: var(--color-blue);
+    z-index: 1;
+}
+
+.progress-step{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.progress-step img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-grey);
+    border: 5px solid var(--color-grey);
+    border-radius: 50%;
+}
+
+.progress-step .active{
+    background-color: var(--color-blue);
+    border: 5px solid var(--color-blue);
+}
+
+#retirado{
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    z-index: 2;
+    font-size: 16px;
+}
+
+.btn-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-container .btn{
+    padding: .5rem 1.5rem;
+    margin: 0 1rem;
+    border-radius: 15px;
+    background-color: var(--color-darkblue);
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.btn.disabled{
+    background-color: var(--color-grey);
+    cursor: not-allowed;
+}
+
+/* Estilo da tabela de produtos */
+.produtos {
+    width: 80%;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.produtos table {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.produtos td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.produtos table td.produto {
+    width: 100%; /* Ajuste essa largura conforme necessário */
+}
+
+.produtos table td.quantidade {
+    width: 20%; /* Ajuste conforme necessário */
+}
+
+/* Organizando cada coluna */
+.produto {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.produto img.imgCamiseta {
+    width: 120px;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Estilo para as informações do produto */
+.infoProduto {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.titulo {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.tamanho,
+.cor {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Coluna da quantidade */
+.quantidade {
+    font-size: 1em;
+    color: #333;
+}
+
+/* Coluna do preço */
+.preco {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.sem_pedidos{
+    display: grid;
+    justify-content: center;
+}
+
+.lbl_sem{
+    margin-top: 80px;
+    margin-bottom: 100px;
+    font-size: 18px;
+}
+  
+
+.continuar_comprando{
+    background-color: var(--color-blue);
+    font-weight: 700;
+    font-size: 18px;
+    border: none;
+    color: white;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+
+@media screen and (max-width: 600px) {
+
+    html, body{
+        overflow-x: hidden;
+        overflow: scroll;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 150px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 20px;
+    }
+
+    .lbl_status{
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .rastreio{
+        display: flex;
+        margin-left: 0px;
+        justify-content: center;
+    }
+
+    #cod{
+        font-size: 20px;
+    }
+
+    .lbl_estimativa, #estimativa{
+        font-size: 16px;
+    }
+
+    .bloco_estimativa{
+        margin-left: 0px;
+        margin-right: 0px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        top: 0px;
+        margin-top: 50px;
+        width: 100%;
+    }
+
+    .wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .progress-container{
+        align-items: center;
+        align-content: center;
+    }
+
+    .progress-step{
+        font-size: 12px;
+    }
+
+    .progress-step img{
+        width: 40px;
+    }
+
+    .produtos{
+        width: 100%;
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .produtos td{
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 300px;
+    }
+
+    .infoProduto{
+        width: 160px;
+    }
+
+    .titulo{
+        font-size: 15px;
+    }
+
+    .cor, .tamanho, .quantidade{
+        font-size: 13px;
+    }
+    
+}  
+
+@media screen and (min-width:600px) and (max-width: 1024px) {
+    html, body{
+        overflow-x: hidden;
+      }
+  
+      header{
+          padding-right: 20px;
+          padding-left: 5px;
+      }
+      
+      #logo{
+          width: 220px;
+      }
+  
+      #perfil,#carrinho{
+          font-size: 22px;
+      }
+
+    .lbl_status{
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .rastreio{
+        display: flex;
+        margin-left: 0px;
+        justify-content: center;
+    }
+
+    #cod{
+        font-size: 20px;
+    }
+
+    .lbl_estimativa, #estimativa{
+        font-size: 16px;
+    }
+
+    .bloco_estimativa{
+        margin-left: 0px;
+        margin-right: 0px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        top: 0px;
+        margin-top: 50px;
+        width: 100%;
+    }
+
+    .wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .progress-container{
+        align-items: center;
+        align-content: center;
+    }
+
+    .progress-step{
+        font-size: 12px;
+    }
+
+    .progress-step img{
+        width: 50px;
+    }
+
+    .imgCamiseta{
+        width: 150px;
+    }
+
+    .produtos{
+        width: 100%;
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .produtos td{
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 300px;
+    }
+
+    .infoProduto{
+        width: 200px;
+    }
+
+    .titulo{
+        font-size: 15px;
+    }
+
+    .cor, .tamanho, .quantidade{
+        font-size: 13px;
+    }
+}

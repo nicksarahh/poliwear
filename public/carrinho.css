@@ -1,0 +1,323 @@
+:root{
+    --color-grey:#E8E8E6;
+    --color-green: #AABBB8;
+    --color-blue: #798EA7;
+    --color-darkblue:#202945;
+}
+  
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat";
+}
+
+body{
+    margin: auto;
+    text-align: center;
+}
+
+header{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 110px;
+    width: 100%;
+    padding-right: 60px;
+    padding-left: 15px;
+    margin-left: 0px;
+    margin-right: 0;
+}
+  
+.icon i{
+  color: black;
+  font-size: 25px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  z-index: 999;
+}
+.icon{
+  cursor: pointer;
+  z-index: 4;
+}
+#perfil{
+  margin-right: 10px;
+}
+  
+#carrinho{
+  padding-right: 5px;
+}
+
+main{
+  margin-left: 70px;
+  margin-right: 100px;
+}
+
+.lbl_carrinho{
+  width: 100%;
+  font-size: 30px;
+  font-weight: 400;
+  height: 200px;
+  text-transform: uppercase;
+}
+
+.label{
+  margin-bottom: 50px;
+}
+
+.titulo{
+  margin-top: 50px; 
+  font-weight: 600; 
+  display: grid; 
+  width: 250px;
+}
+
+hr{
+  display: flex;
+  bottom: 20px;
+}
+
+.tamanho{
+  display: grid;  
+  width: 200px;
+}
+
+.cor{
+  display: grid; 
+  width: 200px;
+}
+
+.quantidade{
+  width: 200px; 
+  display: grid;
+}
+
+.subtotal{
+  width: 200px; 
+  text-align: right; 
+  font-weight: 600;
+}
+
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  width: 25px;
+  height: 20px;
+  border: 1px solid rgb(227, 227, 227);
+  cursor: pointer;
+}
+
+.btn-quant{
+  display: inline-flex;
+}
+
+
+#excluir{
+  display:inline;
+  margin-left: 30px;
+}
+
+.excluir{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-weight: 200;
+  font-size: 30px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+footer{
+  height: 200px;
+}
+
+/* Estiliza a tabela e ajusta largura das colunas */
+#produtos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+#titulo th {
+  padding: 10px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+#itens{
+  font-size: 20px;
+}
+
+#itens td {
+  padding: 10px;
+}
+
+/* Configura a coluna Produto com Flexbox */
+.produto {
+  display: flex;
+  align-items: center;
+}
+
+.imgCamiseta {
+  width: 200px;
+  height: auto;
+  margin-right: 10px;
+  border-radius: 15px;
+}
+
+.infoProduto {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+/* Ajuste opcional para tornar o total destacado */
+table #itens:last-of-type td {
+  font-weight: bold;
+}
+
+.total{
+  width: 100%;
+}
+
+#total{
+  font-weight: bold;
+  text-align: right;
+  font-size: 22px;
+  width: 10%;
+}
+
+.btns{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+}
+
+.seta{
+  width: 15px;
+}
+
+#continuar{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 22px;
+}
+
+.concluir{
+  background-color: var(--color-blue);
+  font-weight: 700;
+  font-size: 25px;
+  border: none;
+  color: white;
+  height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.carrinho-vazio{
+  display: grid;
+  justify-content: center;
+}
+
+.lbl_carrinhoVazio{
+  margin-top: 80px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.carrinho_img{
+  width: 110px;
+  margin-left: 80px;
+  margin-bottom: 100px;
+  opacity: 0.3;
+}
+
+.continuar_comprando{
+  background-color: var(--color-blue);
+  font-weight: 700;
+  font-size: 18px;
+  border: none;
+  color: white;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px){
+
+  html, body{
+    overflow-x: hidden;
+    overflow: scroll;
+}
+
+header{
+    padding-right: 20px;
+    padding-left: 5px;
+    margin-bottom: 30px;
+}
+
+#logo{
+    width: 150px;
+}
+
+#perfil,#carrinho{
+    font-size: 20px;
+}
+  main{
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .imgCamiseta{
+    width: 100px;
+  }
+
+  #itens{
+    font-size: 12px;
+  }
+
+  .tamanho, .quantidade, .cor{
+    display: grid;
+  }
+
+  .infoProduto{
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+  }
+
+  .produto{
+    height: 130px;
+  }
+
+  .titulo{
+    width: 200px;
+  }
+  
+  .lbl_carrinho{
+    font-size: 20px;
+  }
+
+  #total{
+    font-size: 16px;
+  }
+
+  .lbl_continuar, .concluir{
+    font-size: 12px;
+  }
+
+  .concluir{
+    height: 30px;
+  }
+}
+  

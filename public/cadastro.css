@@ -1,0 +1,447 @@
+:root{
+  --color-grey:#E8E8E6;
+  --color-green: #AABBB8;
+  --color-blue: #798EA7;
+  --color-darkblue:#202945;
+}
+body{
+  background-image: radial-gradient(circle, #E8E8E6, #AABBB8, #788DA6);
+  background-attachment: fixed;
+  text-align: center;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  overflow: hidden;
+}
+
+
+.desfoque{
+  width: 450px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: solid gray 3px;
+  border-radius: 40px;
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  margin: auto;
+  align-content: center;
+  z-index: 1;
+}
+
+.label{
+  font-family: "Montserrat";
+  color: black;
+  font-size: 10px;
+  position: relative;
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bolder;
+}
+
+label {
+  font-size: 2em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.input{
+  background-color: #D9D9D9;
+  font-family: "Montserrat";
+  font-size: 15px;
+  border-radius: 15px;
+  border-color: white;
+  text-align: left;
+  letter-spacing: 2px;
+  width: 56px;
+  height: 30px;
+  margin: 0;
+  padding-left: 10px;
+  border: 1px solid white;
+  box-sizing: border-box;
+  font-weight: bolder;
+  display: block;
+}
+
+.nome, .senha {
+  display: inline-flex;
+  
+}
+
+#prim-nome, #ult-nome{
+  padding-left: 5px;
+}
+
+.prim-nome, .div_senha, .confirm_senha{
+  padding-right: 50px;
+  margin-bottom: 30px;
+}
+
+.prim-nome{
+  margin-left: 20px;
+}
+
+.ult-nome, .confirm_senha{
+  padding-right: 45px;
+}
+
+
+.nome input{
+  margin-top: 10px;
+  width: 160px;
+  height: 35px;
+}
+
+.senha input{
+  width: 170px;
+  height: 35px;
+  margin-top: 10px;
+}
+
+input:focus {
+  border: 4 none;
+  outline: 0;
+} 
+
+#rm, #turma, #senha, #confirm_senha{
+  padding-left: 5px;
+}
+
+.rm-turma{
+  display: inline-flex;
+  padding-left: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#input-rm, #input-turma{
+  margin-top: 7px;
+  width: 140px;
+  height: 35px;
+}
+
+.email-senha{
+  padding-left: 10px;
+}
+
+.turma{
+  display: table;
+  padding-left: 50px;
+  width: 100%;
+}
+
+.email-senha{
+  display: table;
+  margin-left: 20px;
+}
+
+.insira{
+  margin-bottom: 30px;
+}
+
+#email{
+  width: 300px;
+  height: 35px;
+  padding-right: 30px;
+  margin-top: 10px;
+}
+
+.link{
+  font-family: "Montserrat";
+  font-weight: bold;
+  font-size: 10px;
+  padding-left: 50px;
+  padding-top: 5px;
+}
+
+.cadastrar{
+  margin-bottom: 5px;
+}
+
+.btn-cadastrar{
+  background-color: var(--color-blue);
+  border: 0;
+  margin-top: 10px;
+  width: 145px;
+  height: 35px;
+  border-radius: 15px;
+  font-family: "Montserrat";
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+#error{
+  display: none;
+  font-family: "Montserrat";
+  background-color: var(--color-darkblue);
+  color: white;
+  width: auto;
+  height:30px;
+  align-items: center;
+  text-align: center;
+  padding-left: 40px;
+  padding-right: 30px;
+  border-radius: 15px;
+}
+
+@media screen and (max-width: 419px) {
+  .desfoque{
+    width: 300px;
+    height: 600px;
+  }
+
+  .label{
+    font-size: 8px;
+  }
+
+  .nome{
+    display: table;
+    margin-left: 25px;
+  }
+  
+  #prim-nome, #ult-nome{
+    padding-left: 5px;
+  }
+  
+  .prim-nome{
+    margin-bottom: 20px;
+    margin-left: 0px;
+  }
+  
+  .nome input{
+    margin-top: 10px;
+    width: 150px;
+    height: 30px;
+  }
+
+  .rm-turma{
+    padding-left: 25px;
+  }
+
+  #email{
+    width: 250px;
+    height: 30px;
+  }
+
+  #input-rm, #input-turma{
+    width: 100px;
+    height: 30px;
+  }
+  
+  .ult-nome{
+    margin-bottom: 20px;
+  }
+
+  .email-senha{
+    margin-left: 15px;
+  }
+
+  #email{
+    margin-bottom: 20px;
+  }
+
+  #input-senha, #input-confirm{
+    width: 140px;
+  }
+
+  .div_senha{
+    margin-bottom: 20px;
+  }
+
+  .confirm_senha{
+    margin-bottom: 10px;
+  }
+
+  .senha{
+    display: table;
+  }
+
+  #error{
+    margin: 0;
+    font-size: 15px;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 420px) and (max-width: 920){
+  #input-turma{
+    width: 140px;
+    height: 35px;
+    margin-left: 20px;
+  }
+
+  .desfoque{
+    width: 400;
+    margin-left: 15px;
+  }
+
+  .email-senha{
+    margin-left: 20px;
+  }
+
+  .rm-turma{
+    margin-left: 30px;
+  }
+
+  .turma{
+    padding-left: 60px;
+  }
+
+  #turma{
+    padding-left: 20px;
+  }
+
+  .nome{
+    margin-left: 40px;
+  }
+
+  .div_senha{
+    margin-right: 35px;
+    padding-right: 0;
+  }
+
+  #input-senha, #input-confirm{
+    width: 170px;
+  }
+
+}
+
+@media screen and (min-width: 1900px) and (max-width: 2399px){
+  .desfoque{
+    width: 550px;
+    height: 650px;
+  }
+
+  label{
+    font-size: 25px;
+  }
+
+  #input-nome{
+    width: 190px;
+    height: 40px;
+  }
+
+  #input-rm, #input-turma{
+    width: 155px;
+    height: 40px;
+  }
+
+  #email{
+    height: 40px;
+  }
+
+  #input-senha, #input-confirm{
+    width: 215px;
+    height: 40px;
+  }
+
+  .rm-turma{
+    margin-left: 25px;
+  }
+
+  .prim-nome{
+    margin-left: 0px;
+  }
+
+  .email-senha{
+    margin-left: 25px;
+  }
+
+  .btn-cadastrar{
+    width: 180px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
+@media screen and (min-width:2400px) and (max-width:2560px){
+  .desfoque{
+    width: 700px;
+    height: 900px;
+    border-radius: 60px;
+  }
+  label{
+    font-size: 32px;
+  }
+
+  .turma{
+    margin-left: 60px;
+  }
+
+  #input-nome, #input-senha, #input-confirm{
+  width: 265px;
+  height: 50px;
+  border-radius: 20px;
+}
+
+#input-nome{
+  width: 250px;
+  height: 50px;
+  border-radius: 20px;
+}
+
+#input-rm, #input-turma{
+  width: 150px;
+  height: 50px;
+  border-radius: 20px;
+}
+
+.rm-turma{
+  margin-left: 50px;
+}
+
+#email{
+  width: 400px;
+  height: 50px;
+}
+
+.email-senha{
+  margin-left: 50px;
+}
+
+.btn-cadastrar{
+  cursor: pointer;
+  background-color: var(--color-blue);
+  border: 0;
+  margin-top: 50px;
+  width: 200px;
+  height: 60px;
+  font-size: 25px;
+  border-radius: 15px;
+  font-family: "Montserrat";
+  font-weight: bolder;
+}
+
+.btn-cadastrar{
+  margin-top: 40px;
+}
+
+#mostrar{
+  font-size: 32px;
+}
+
+#esqueci.link{
+  padding-left: 20px;
+  font-size: 25px;
+}
+
+.input{
+  font-size: 25px;
+}
+
+#error{
+  width: auto;
+  font-size: 30px;
+  height: 50px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+}

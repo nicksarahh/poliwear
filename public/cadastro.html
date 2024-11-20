@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cadastro.css">
+
+    <!-- fontes utilizadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;1,200&display=swap" rel="stylesheet">  
+    
+    <!-- icone do site na aba do navegador -->
+    <link rel="shortcut icon" href="imagens/wear.ico" type="image/x-icon">
+
+    <title>Poli Wear | Cadastro</title>
+
+        
+</head>
+<body>
+    <div class="tela">
+        <form action="/cadastro" method="post" id="cadastroForm">
+        <div class="desfoque">
+            <div id="error"></div> <!-- Local para exibir erros -->
+            <div class="rm-turma">
+                
+                <div class="label" style="display: table;">
+                    <label id="rm">RM</label>
+                    <input type="text"  minlength="5" maxlength="5" placeholder="" name="rm" class="input" id="input-rm" required>
+                </div>
+                <div class="label turma" style="display: table;">
+                    <label id="turma">Turma</label>
+                    <input type="text" maxlength="20" name="turma" class="input" id="input-turma" style="text-transform: uppercase;" required>
+                </div>
+            </div>
+            <div class="nome">
+                <div class="prim-nome">
+                    <div class="label">
+                        <label id="prim-nome">Primeiro nome</label>
+                    </div>
+                    <div>
+                        <input type="text" maxlength="16" name="prim_nome" class="input" id="input-nome" required>
+                    </div>
+                </div>
+                <div class="ult-nome">
+                    <div class="label">
+                        <label id="ult-nome">Último nome</label>
+                    </div>
+                    <div>
+                        <input type="text" maxlength="20" name="ult_nome" class="input" id="input-nome" required>
+                    </div>
+                </div>
+            </div>
+                <div class="email-senha">
+                    <div class="email">
+                        <div class="label">
+                            <label id="email">Email</label>
+                        </div>
+                        <div>
+                            <input type="email" name="email" class="input insira" id="email" required>
+                        </div>
+                    </div>
+                <div class="senha">
+                    <div class="div_senha">
+                        <div class="label">
+                            <label id="senha">Insira sua senha</label>
+                        </div>
+                        <div>
+                            <input type="password" maxlength="20" name="senha" class="input" id="input-senha" required>
+                        </div>
+                    </div>
+                    <div class="confirm_senha">
+                        <div class="label">
+                            <label id="confirm_senha">Confirmar senha</label>
+                        </div>
+                        <div>
+                            <input type="text" maxlength="20" name="confirm_senha" class="input" id="input-confirm" required>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="cadastrar">
+                    <button type="submit" class="btn-cadastrar">CADASTRAR</button>
+                </div>
+                
+
+        </div>
+        </form>
+    </div>
+    <script src="cadastro.js"></script>
+</body>
+</html>

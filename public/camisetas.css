@@ -1,0 +1,611 @@
+:root{
+    --color-grey:#E8E8E6;
+    --color-green: #AABBB8;
+    --color-blue: #798EA7;
+    --color-darkblue:#202945;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-family: "Montserrat";
+}
+
+html, body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+header{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 110px;
+    width: 100%;
+    padding-right: 60px;
+    padding-left: 15px;
+    margin-left: 0px;
+    margin-right: 0;
+  }
+
+  #logo{
+    width: 220px;
+  }
+  
+  .icon i{
+    color: black;
+    font-size: 25px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    z-index: 999;
+  }
+
+  .icon{
+    cursor: pointer;
+    z-index: 4;
+  }
+
+  #perfil{
+    margin-right: 10px;
+  }
+  
+  #carrinho{
+    padding-right: 5px;
+  }
+
+.segunda-part{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.segunda-part form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#camiseta{
+    border-radius: 20px;
+    margin-right: 100px;
+    margin-top: 20px;
+}
+
+.info{
+    border: 2px solid black;
+    display: grid;
+    border-radius: 15px;
+}
+
+.titulo{
+    display: grid;
+    border-bottom: 2px solid black;
+    padding: 10px 20px;
+    font-size: 20px;
+    height: 100px;
+    width: 350px;
+    background-color: var(--color-grey);
+    border-radius: 15px;
+}
+
+.descric{
+    display: grid;
+
+}
+
+#titulo{
+    padding-top: 10px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 20px;
+}
+
+#preco{
+    font-weight: bolder;
+    padding-top: 10px;
+}
+
+.descric{
+    height: 400px;
+    padding-top: 40px;
+    padding-bottom: 30px;
+}
+
+.descr label{
+    font-size: 15px;
+}
+
+.tamanho{
+    margin-left: 15px;
+}
+#tamanho{
+    border-radius: 20px;
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: var(--color-grey);
+}
+
+#tamanho:focus{
+    border: none;
+    outline: none;
+}
+
+.cor{
+    display: inline-flex;
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.radio{
+    appearance: none;
+    margin-top: 3px;
+    margin-left: 5px;
+    height: 15px;
+    width: 15px;
+   border-radius: 100%;
+    cursor: pointer;
+}
+
+#black{
+    background-color: black;
+
+}
+
+#white{
+    border: 1px solid black;
+}
+
+#black:checked{
+    border: 3px solid var(--color-green);
+}
+
+#white:checked{
+    border: 3px solid var(--color-green);
+}
+
+.quantidade{
+    margin-right: 10px;
+}
+
+.quant{
+    width: 200px;
+    height: 70px;
+    margin-left: 15px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    padding-bottom: 5px;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+    width: 25px;
+    height: 20px;
+    border: 1px solid rgb(227, 227, 227);
+}
+
+.btn-quant{
+    display: inline-flex;
+}
+
+
+#label-quant{
+    width: 20px;
+    height: 20px;
+    border: none;
+    text-align: center;
+    flex:1;
+    border: 1px solid rgb(227, 227, 227);
+}
+
+#label-quant:focus-visible{
+    outline: none;
+}
+
+.tab{
+    font-size: 12px;
+    text-align: right;
+    text-transform: uppercase;
+    margin-right: 30px;
+    padding-bottom: 20px;
+    cursor: pointer;
+    text-decoration:underline
+}
+
+.tab:visited{
+    color: black;
+}
+
+.tab::before{
+    color: black;
+}
+
+#janelaModal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: auto;
+}
+
+#imgModal{
+    margin: auto;
+    margin-top: 100px;
+    display: block;
+    width: 100%;
+    max-width: 800px;
+}
+
+#btnModal{
+    position: absolute;
+    background-color: var(--color-green);
+    width: 50px;
+   text-align: center;
+    border-radius: 100%;
+    top: 25px;
+    right: 35px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: auto;
+}
+
+.add{
+    background-color: var(--color-green);
+    text-transform: uppercase;
+    border-radius: 25px;
+    border: none;
+    width: 230px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.mensagem{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#mensagem{
+    display: none;
+    font-family: "Montserrat";
+    background-color: var(--color-darkblue);
+    color: white;
+    width: auto;
+    height:30px;
+    align-items: center;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 30px;
+    border-radius: 15px;
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media screen and (max-width: 425px) {
+    html, body{
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 150px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 20px;
+    }
+
+    #adicionarCarrinho{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    #camiseta{
+        width: 300px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 20px;
+    }
+
+    .info{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .titulo{
+        width: 290px;
+    }
+
+    .descric{
+        height: 300px;
+    }
+
+    #btn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: auto;
+    }
+
+    .add{
+        margin: 0px;
+    }
+
+    #mensagem{
+        font-size: 10px;
+        height: 20px;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px){
+    html, body{
+        overflow-x: hidden;
+        overflow: scroll;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 150px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 20px;
+    }
+
+    #adicionarCarrinho{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    #camiseta{
+        width: 400px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 50px;
+    }
+
+    .info{
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .titulo{
+        width: 300px;
+    }
+
+    .descric{
+        height: 300px;
+    }
+
+    #btn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: auto;
+    }
+
+    .add{
+        margin: 0px;
+    }
+
+    #mensagem{
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    html, body{
+        overflow-x: hidden;
+        overflow: scroll;
+    }
+
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+    }
+    
+    #logo{
+        width: 150px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 20px;
+    }
+
+    #adicionarCarrinho{
+        width: 100%;
+        height: auto;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    #camiseta{
+        width: 450px;
+        margin-right: 20px;
+        margin-left: 0px;
+        margin-top: 50px;
+
+    }
+
+    .info{
+        margin-top: 30px;
+        margin-bottom: 50px;
+
+    }
+
+    .titulo{
+        width: 300px;
+    }
+
+    .descric{
+        height: 300px;
+    }
+
+    #btn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: auto;
+    }
+
+    .add{
+        margin: 0px;
+    }
+
+    #mensagem{
+        font-size: 16px;
+        height: 50px;
+    }
+}
+
+@media screen and (min-width: 2200px){
+    header{
+        padding-right: 20px;
+        padding-left: 5px;
+        margin-bottom: 80px;
+    }
+    
+    #logo{
+        width: 250px;
+    }
+
+    #perfil,#carrinho{
+        font-size: 30px;
+    }
+
+    
+    #camiseta{
+        width: 50%;
+    }
+
+    .titulo{
+        width: 400px;
+        height: 200px;
+    }
+
+    #titulo, #preco{
+        font-size: 35px;
+    }
+
+    .descric{
+        height: 500px;
+    }
+
+    label{
+        font-size: 30px;
+    }
+
+    .quant{
+        width: auto;
+    }
+
+    .btn{
+        height: 45px;
+        width: 45px;
+    }
+
+    #icone{
+        font-size: 25px;
+    }
+
+    #label-quant{
+        font-size: 25px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .radio{
+        margin-top: 5px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .add{
+        font-size: 20px;
+        width: 350px;
+        height: 50px;
+    }
+
+    #tamanho{
+        width: 80px;
+        height: 40px;
+        font-size: 25px;
+    }
+
+    select, option{
+        font-size: 15px;
+    }
+
+    #mensagem{
+        font-size: 30px;
+    }
+}
+
+
+
+
+

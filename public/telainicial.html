@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styleinicial.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;1,200&display=swap" rel="stylesheet">   
+    <link rel="shortcut icon" href="/imagens/wear.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <title>Poli Wear | Início</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    
+    <script>
+        let svg = document.querySelector('svg');
+
+        svg.addEventListener('mouseover', () => svg.pauseAnimations());
+        svg.addEventListener('mouseleave', () => svg.unpauseAnimations());
+      
+    </script>
+
+</head>
+<body>
+    <header>
+        <a href="telainicial.html" class="logo"><img src="/imagens/logo.png" id="logo"></a>
+
+        <div class="icon">
+            <a href="/perfil.html"><i class="bi bi-person" id="perfil"></i></a>
+            <a href="/carrinho"><i class="bi bi-cart3" id="carrinho"></i></a>
+        </div>
+    </header>
+    <main>
+        <div class="parte_um">
+            <div class="div_escrita">
+                <div class="ola_escrita"><label class="escrita_um">Olá,&nbsp;</label><label id="nome_user" class="escrita_um">usuário</label></div>
+                <label class="escrita_dois">Agora ficou mais fácil adquirir <br> as camisetas do Poli.</label>
+            </div>
+            
+            <div class="manikin">
+                <img id="manikin" src="imagens/manikin.png">
+            </div>
+        </div>
+        
+        <div class="parte_dois" id="camisetas">
+            <div class="foto">
+                    <img src="/imagens/camisetas_telainicial.png" class="camisa">
+            </div>
+            <h1 style="font-family:Montserrat; font-size: 36px;">
+                <div class="space">
+                  <svg width="100%" height="100%" viewBox="650 -20 1300 200" id="text-container">
+                    <path id="curve" fill="transparent" d="M-550,150L-550,9 S-183.15,159 0,159 S366.85,9 550,9 S916.85,159 1100,159 S1466.85,9 1650,9 S2016.85,159 2200,159"></path>
+                    <text width="100%">
+                        <textPath href="#curve" id="text-path">
+                            Nossos produtos Nossos produtos Nossos produtos Nossos produtos Nossos produtos Nossos produtos Nossos produtos Nossos produtos 
+                        </textPath>
+                    </text>
+                  </svg>
+                </div>
+              </h1>
+
+                
+        
+                <div class="botoes">
+                    <button type="button" id="camiseta">
+                        <a href="camisetas.html">
+                        <label class="lbl_camiseta">CAMISETA POLI</label>
+                        <img src="/imagens/seta.png" class="seta">
+                      </a> 
+                    </button> <br><br>
+                    <button type="button" id="curso">
+                        <a href="camisetaPersonalizada.html">
+                        <label class="lbl_camiseta">PERSONALIZADA</label>
+                        <img src="/imagens/seta.png" class="seta">
+                      </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <label class="desenvolvedoras">Conheça as <a href="criadoras.html" class="link-desenvolvedoras">desenvolvedoras</a> do site</label>
+    </footer>
+    <script src="/telaInicial.js"></script>
+</body>
+</html>
