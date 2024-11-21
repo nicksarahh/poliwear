@@ -69,7 +69,7 @@ app.post('/cadastro', async (req, res) => {
   // Verificação das senhas
   if (senha !== confirm_senha) {
     return res.status(400).send('As senhas não coincidem!');
-  }else{
+  }
 
   try {
     // Verificar se o RM já está cadastrado
@@ -83,14 +83,19 @@ app.post('/cadastro', async (req, res) => {
     const hashedPassword = await bcrypt.hash(senha, 10);
 
     // Inserir novo usuário no banco de dados
-    await db.query('INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)', [rm, turma, prim_nome, ult_nome, email, hashedPassword]);
+    const result = await db.query(
+      'INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)',
+      [rm, turma, prim_nome, ult_nome, email, hashedPassword]
+    );
 
-   return res.status(400).send('Usuário cadastrado com sucesso!');
+    console.log('Usuário cadastrado com ID:', result.insertId); // Log para ver o ID gerado
+    return res.status(200).send('Usuário cadastrado com sucesso!');
   } catch (err) {
-    return res.status(400).send('Erro no servidor!');
+    console.error('Erro ao cadastrar usuário:', err.message); // Inclua o detalhe do erro
+    return res.status(500).send('Erro no servidor!');
   }
-}
 });
+
 
 // Rota de login
 app.post('/login', async (req, res) => {
