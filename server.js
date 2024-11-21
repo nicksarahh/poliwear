@@ -47,7 +47,7 @@ db.getConnection((err, conn) => {
   console.log("Connected Successfully")
 })
 
-module.exports - db.promise()
+module.exports = db.promise()
 
 // Rota para a página de login
 app.get('/', (req, res) => {
