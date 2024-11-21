@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "start": "/server.js",
+    "start": "node server.js",
     "dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules --respawn src/server.js"
   },
   "keywords": [],

@@ -42,12 +42,11 @@ const db = mysql.createPool({
 });
 
 
-db.getConnection((err, conn) => {
-  if(err) console.log(err)
-  console.log("Connected Successfully")
-})
+db.getConnection()
+  .then(() => console.log("Connected Successfully"))
+  .catch(err => console.error("Database Connection Failed:", err));
 
-module.exports = db.promise()
+module.exports = db.promise();
 
 // Rota para a página de login
 app.get('/', (req, res) => {
