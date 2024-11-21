@@ -32,14 +32,22 @@ const upload = multer({ storage: storage });
 
 // Conexão com o banco de dados MySQL
 const db = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'poliwear',
+  host:  process.env.DB_HOST ,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
+
+
+db.getConnection((err, conn) => {
+  if(err) console.log(err)
+  console.log("Connected Successfully")
+})
+
+module.exports - db.promise()
 
 // Rota para a página de login
 app.get('/', (req, res) => {
