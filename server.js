@@ -68,7 +68,7 @@ app.post('/cadastro', async (req, res) => {
 
   // Verificação das senhas
   if (senha !== confirm_senha) {
-    return res.status(200).send('As senhas não coincidem!');
+    return res.status(400).send('As senhas não coincidem!');
   }else{
 
   try {
@@ -76,7 +76,7 @@ app.post('/cadastro', async (req, res) => {
     const [rows] = await db.query('SELECT * FROM usuarios WHERE rm = ?', [rm]);
 
     if (rows.length > 0) {
-      return res.status(200).send('Usuário já cadastrado!');
+      return res.status(400).send('Usuário já cadastrado!');
     }
 
     // Criptografar a senha
@@ -85,9 +85,9 @@ app.post('/cadastro', async (req, res) => {
     // Inserir novo usuário no banco de dados
     await db.query('INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)', [rm, turma, prim_nome, ult_nome, email, hashedPassword]);
 
-   return res.status(200).send('Usuário cadastrado com sucesso!');
+   return res.status(400).send('Usuário cadastrado com sucesso!');
   } catch (err) {
-    return res.status(200).send('Erro no servidor!');
+    return res.status(400).send('Erro no servidor!');
   }
 }
 });
