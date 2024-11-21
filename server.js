@@ -191,3 +191,110 @@ app.get('/carrinho', authMiddleware, async (req, res) => {
 });
 
 // Outras rotas permanecem similares...
+
+app.post('/remover-produto', async (req, res) => {
+  const produtoId = req.body.produto_id;
+
+  try {
+    const [result] = await db.query('DELETE FROM carrinho WHERE id = ?', [produtoId]);
+
+    if (result.affectedRows === 0) {
+      console.log('Produto não encontrado no carrinho!');
+    }
+
+    console.log('Produto excluído com sucesso:', produtoId);
+    res.redirect('/carrinho'); // Redireciona para a página do carrinho após a exclusão
+  } catch (err) {
+    console.error('Erro ao excluir produto:', err);
+    return res.status(500).send('Erro no servidor!');
+  }
+});
+
+
+app.post('/concluirPedido', async (req, res) => {
+  const rm = req.session.rm;  // Supondo que o RM do usuário esteja na sessão
+
+  if (!rm) {
+    return res.redirect('/login.html')
+  }
+
+  try {
+    // Inserir os pedidos na tabela pedidos primeiro
+    const inserirPedidosQuery = `
+      INSERT INTO pedidos (rm, titulo, preco, tamanho, cor, quantidade, imagem)
+      SELECT rm, titulo, preco, tamanho, cor, quantidade, imagem
+      FROM carrinho
+      WHERE rm = ?`;
+
+    console.log('Inserindo pedidos para RM:', rm);
+
+    // Executando a inserção com await
+    await db.execute(inserirPedidosQuery, [rm]);
+    console.log('Pedidos inseridos com sucesso');
+
+    // Após inserir, excluir os pedidos da tabela carrinho
+    const excluirCarrinhoQuery = 'DELETE FROM carrinho WHERE rm = ?';
+    await db.execute(excluirCarrinhoQuery, [rm]);
+    console.log('Carrinho excluído com sucesso');
+
+    // Redirecionar para a página finalizar.html
+    res.redirect('/finalizar.html');
+  } catch (err) {
+    console.log('Erro ao concluir pedido:', err.message);
+  }
+});
+
+// Rota para servir o arquivo HTML (finalizar.html)
+app.get('/finalizar.html', (req, res) => {
+  res.sendFile(__dirname + '/finalizar.html');
+});
+
+
+
+
+
+app.get('/rastreio', async (req, res) => {
+  const rm = req.session.rm; // Obtém o RM da sessão
+
+  if (!rm) {
+    return res.redirect('/login.html');
+  }
+
+  const query = 'SELECT * FROM pedidos WHERE rm = ?';
+  
+  try {
+    const [results] = await db.query(query, [rm]);
+
+
+    res.render('rastreio', { itens: results});
+  } catch (err) {
+    console.error('Erro ao buscar itens do carrinho:', err);
+    return res.status(400).send('Erro ao buscar itens do carrinho');
+  }
+});
+
+app.post("/excluir-rastreio", (req, res) => {
+  const rm = req.session.rm;
+
+    if (!rm) {
+        return res.redirect('/login.html')
+    }
+
+    const deleteQuery = 'DELETE FROM pedidos WHERE rm = ?';
+
+    db.query(deleteQuery, [rm], (error, results) => {
+        if (error) {
+            console.error(error);
+        }
+        res.render('rastreio', { message: 'Obrigado pela compra!' });
+    });
+    
+});
+
+
+
+// Iniciar o servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
