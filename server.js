@@ -39,14 +39,13 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-});
+}).promise();
 
 
 db.getConnection()
   .then(() => console.log("Connected Successfully"))
   .catch(err => console.error("Database Connection Failed:", err));
 
-module.exports = db.promise();
 
 // Rota para a página de login
 app.get('/', (req, res) => {
