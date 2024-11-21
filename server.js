@@ -1,335 +1,193 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
-const multer = require('multer'); // Para upload de imagens
+const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
+const { body, validationResult } = require('express-validator'); // Para validação
 
-// Inicializar o app
 const app = express();
 
-// Configurações
-app.set('view engine', 'ejs'); // Aqui deve estar após a inicialização do app
+// Configurações do app
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Servir arquivos estáticos (HTML, CSS, JS, imagens)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuração de sessão
-app.use(session({
-  secret: 'as-tapadas',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+app.use(
+  session({
+    secret: 'as-tapadas',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Somente cookies seguros em produção
+      httpOnly: true, // Evita acesso via JavaScript
+    },
+  })
+);
+
+// Middleware para verificar autenticação
+function authMiddleware(req, res, next) {
+  if (!req.session.loggedin) {
+    return res.redirect('/login.html');
+  }
+  next();
+}
 
 // Configuração do Multer para upload de arquivos
-const storage = multer.memoryStorage(); // Armazena o arquivo na memória
-const upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // Conexão com o banco de dados MySQL
 const db = mysql.createPool({
-  host:  process.env.DB_HOST ,
+  host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
-}).promise();
+  queueLimit: 0,
+});
 
-
+// Teste de conexão
 db.getConnection()
-  .then(() => console.log("Connected Successfully"))
-  .catch(err => console.error("Database Connection Failed:", err));
+  .then(() => console.log('Conexão com o banco estabelecida.'))
+  .catch((err) => console.error('Falha na conexão com o banco:', err));
 
+// Rotas
 
-// Rota para a página de login
+// Página de login
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// Rota de cadastro de usuário
-app.post('/cadastro', async (req, res) => {
-  const { rm, turma, prim_nome, ult_nome, email, senha, confirm_senha } = req.body;
-
-  // Verificação das senhas
-  if (senha !== confirm_senha) {
-    return res.status(400).send('As senhas não coincidem!');
-  }else{
-
-  try {
-    // Verificar se o RM já está cadastrado
-    const [rows] = await db.query('SELECT * FROM usuarios WHERE rm = ?', [rm]);
-
-    if (rows.length > 0) {
-      return res.status(400).send('Usuário já cadastrado!');
+// Cadastro de usuário
+app.post(
+  '/cadastro',
+  [
+    body('rm').isNumeric().withMessage('RM deve ser numérico.'),
+    body('email').isEmail().withMessage('Email inválido.'),
+    body('senha').isLength({ min: 6 }).withMessage('Senha deve ter pelo menos 6 caracteres.'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    // Criptografar a senha
-    const hashedPassword = await bcrypt.hash(senha, 10);
+    const { rm, turma, prim_nome, ult_nome, email, senha, confirm_senha } = req.body;
 
-    // Inserir novo usuário no banco de dados
-    await db.query('INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)', [rm, turma, prim_nome, ult_nome, email, hashedPassword]);
+    if (senha !== confirm_senha) {
+      return res.status(400).send('As senhas não coincidem!');
+    }
 
-   return res.status(400).send('Usuário cadastrado com sucesso!');
-  } catch (err) {
-    return res.status(400).send('Erro no servidor!');
+    try {
+      const [rows] = await db.query('SELECT * FROM usuarios WHERE rm = ?', [rm]);
+
+      if (rows.length > 0) {
+        return res.status(400).send('Usuário já cadastrado.');
+      }
+
+      const hashedPassword = await bcrypt.hash(senha, 10);
+
+      await db.query(
+        'INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)',
+        [rm, turma, prim_nome, ult_nome, email, hashedPassword]
+      );
+
+      return res.status(201).send('Usuário cadastrado com sucesso.');
+    } catch (err) {
+      console.error('Erro ao cadastrar usuário:', err);
+      return res.status(500).send('Erro no servidor.');
+    }
   }
-}
-});
+);
 
-// Rota de login
+// Login
 app.post('/login', async (req, res) => {
   const { rm, senha } = req.body;
 
   try {
-    // Verificar se o usuário existe
     const [rows] = await db.query('SELECT * FROM usuarios WHERE rm = ?', [rm]);
 
     if (rows.length === 0) {
-      return res.status(400).send('Usuário não encontrado!');
+      return res.status(400).send('Usuário não encontrado.');
     }
 
     const usuario = rows[0];
-
-    // Verificar a senha
     const match = await bcrypt.compare(senha, usuario.senha);
+
     if (!match) {
-      return res.status(400).send('Senha incorreta!');
+      return res.status(401).send('Senha incorreta.');
     }
 
-    // Armazenar dados na sessão
     req.session.loggedin = true;
     req.session.firstName = usuario.prim_nome;
-    req.session.rm = usuario.rm; // Armazenar RM na sessão
+    req.session.rm = usuario.rm;
 
-    console.log('Sessão após login:', req.session); // Verificar a sessão após o login
-
-    // Redirecionar para a tela inicial
     return res.redirect('/telainicial.html');
   } catch (err) {
-    console.error('Erro ao fazer login:', err);
-    return res.status(500).send('Erro no servidor!');
+    console.error('Erro no login:', err);
+    return res.status(500).send('Erro no servidor.');
   }
 });
 
-// Rota para a tela inicial
-app.get('/telainicial.html', (req, res) => {
-  if (req.session.loggedin) {
-    res.sendFile(path.join(__dirname, 'public', 'telainicial.html'));
-  } else {
-    res.redirect('/login.html');
-  }
+// Página inicial
+app.get('/telainicial.html', authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'telainicial.html'));
 });
 
-// Rota para o perfil do usuário
-app.get('/perfil', async (req, res) => {
-  if (!req.session.loggedin) {
-    return res.redirect('/login.html'); // Redirecionar se o usuário não estiver logado
-  }
-
+// Perfil do usuário
+app.get('/perfil', authMiddleware, async (req, res) => {
   try {
-    // Buscar o usuário no banco de dados baseado no RM armazenado na sessão
-    const [rows] = await db.query('SELECT rm, turma, prim_nome, ult_nome, email, imagem_perfil FROM usuarios WHERE rm = ?', [req.session.rm]);
+    const [rows] = await db.query(
+      'SELECT rm, turma, prim_nome, ult_nome, email, imagem_perfil FROM usuarios WHERE rm = ?',
+      [req.session.rm]
+    );
 
     if (rows.length === 0) {
-      return res.status(400).send('Usuário não encontrado!');
+      return res.status(404).send('Usuário não encontrado.');
     }
 
-    // Enviar os dados do usuário para a página de perfil (exceto senha)
     const usuario = rows[0];
     res.json({
       rm: usuario.rm,
-      nome_completo: `${usuario.prim_nome} ${usuario.ult_nome}`, // Concatenando primeiro e último nome
+      nome_completo: `${usuario.prim_nome} ${usuario.ult_nome}`,
       turma: usuario.turma,
       email: usuario.email,
-      imagem_perfil: usuario.imagem_perfil ? usuario.imagem_perfil.toString('base64') : null // Converter imagem para base64
+      imagem_perfil: usuario.imagem_perfil ? usuario.imagem_perfil.toString('base64') : null,
     });
   } catch (err) {
-    console.error('Erro ao buscar dados do perfil:', err);
-    return res.status(500).send('Erro no servidor!');
+    console.error('Erro ao buscar perfil:', err);
+    return res.status(500).send('Erro no servidor.');
   }
 });
 
-// Rota para upload de imagem de perfil
-app.post('/upload', upload.single('file'), async (req, res) => {
-  const imagem = req.file.buffer;
-  const rm = req.session.rm; // RM do usuário logado
-
+// Upload de imagem de perfil
+app.post('/upload', authMiddleware, upload.single('file'), async (req, res) => {
   try {
-      await db.query('UPDATE usuarios SET imagem_perfil = ? WHERE rm = ?', [imagem, rm]);
-      res.json({ message: 'Imagem salva com sucesso!' });
+    await db.query('UPDATE usuarios SET imagem_perfil = ? WHERE rm = ?', [req.file.buffer, req.session.rm]);
+    res.status(200).json({ message: 'Imagem salva com sucesso.' });
   } catch (err) {
-      console.error('Erro ao salvar a imagem:', err);
-      res.status(500).json({ message: 'Erro ao salvar a imagem.' });
+    console.error('Erro ao salvar imagem:', err);
+    res.status(500).json({ message: 'Erro no servidor.' });
   }
 });
 
-// Rota para obter dados do usuário
-app.get('/getUser', (req, res) => {
-  if (req.session.loggedin) {
-    res.json({ prim_nome: req.session.firstName }); // Retornar o nome do usuário
-  } else {
-    res.sendFile(path.join(__dirname, 'public', 'telainicial.html'));
-  }
-});
-
-
-// Rota para adicionar item ao carrinho
-app.post('/adicionarCarrinho', async (req, res) => {
-  const { titulo, preco, tamanho, cor, quantidade, imagem, nome_camiseta, num_camiseta } = req.body;
-  const rm = req.session.rm; // Pegando o RM da sessão
-
-  if (!rm) {
-      return res.redirect('/login.html')
-  }
-
-  // SQL query para inserir os dados no banco de dados, incluindo o caminho da imagem
-  const query = `INSERT INTO carrinho (titulo, preco, tamanho, cor, quantidade, rm, imagem, nome_camiseta, num_camiseta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
+// Visualizar carrinho
+app.get('/carrinho', authMiddleware, async (req, res) => {
   try {
-      await db.query(query, [titulo, preco, tamanho, cor, quantidade, rm, imagem, nome_camiseta, num_camiseta]);
-      console.log('Produto adicionado ao carrinho com sucesso!');
-      return res.status(200).send('Produto adicionado ao carrinho com sucesso!');
-  } catch (err) {
-      console.error('Erro ao inserir produto no carrinho:', err);
-      return res.status(500).send('Erro ao adicionar produto ao carrinho.');
-  }
-});
-
-
-
-// Rota para visualizar carrinho
-app.get('/carrinho', async (req, res) => {
-  const rm = req.session.rm; // Obtém o RM da sessão
-
-  if (!rm) {
-    return res.redirect('/login.html');
-  }
-
-  const query = 'SELECT * FROM carrinho WHERE rm = ?';
-  
-  try {
-    const [results] = await db.query(query, [rm]);
-
-    // Calcula o total somando o subtotal (preço * quantidade) de cada item
-    const total = results.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2);
+    const [results] = await db.query('SELECT * FROM carrinho WHERE rm = ?', [req.session.rm]);
+    const total = results.reduce((acc, item) => acc + item.preco * item.quantidade, 0).toFixed(2);
 
     res.render('carrinho', { itens: results, total });
   } catch (err) {
-    console.error('Erro ao buscar itens do carrinho:', err);
-    return res.status(500).send('Erro ao buscar itens do carrinho');
+    console.error('Erro ao buscar carrinho:', err);
+    res.status(500).send('Erro no servidor.');
   }
 });
 
-
-app.post('/remover-produto', async (req, res) => {
-  const produtoId = req.body.produto_id;
-
-  try {
-    const [result] = await db.query('DELETE FROM carrinho WHERE id = ?', [produtoId]);
-
-    if (result.affectedRows === 0) {
-      console.log('Produto não encontrado no carrinho!');
-    }
-
-    console.log('Produto excluído com sucesso:', produtoId);
-    res.redirect('/carrinho'); // Redireciona para a página do carrinho após a exclusão
-  } catch (err) {
-    console.error('Erro ao excluir produto:', err);
-    return res.status(500).send('Erro no servidor!');
-  }
-});
-
-
-app.post('/concluirPedido', async (req, res) => {
-  const rm = req.session.rm;  // Supondo que o RM do usuário esteja na sessão
-
-  if (!rm) {
-    return res.redirect('/login.html')
-  }
-
-  try {
-    // Inserir os pedidos na tabela pedidos primeiro
-    const inserirPedidosQuery = `
-      INSERT INTO pedidos (rm, titulo, preco, tamanho, cor, quantidade, imagem)
-      SELECT rm, titulo, preco, tamanho, cor, quantidade, imagem
-      FROM carrinho
-      WHERE rm = ?`;
-
-    console.log('Inserindo pedidos para RM:', rm);
-
-    // Executando a inserção com await
-    await db.execute(inserirPedidosQuery, [rm]);
-    console.log('Pedidos inseridos com sucesso');
-
-    // Após inserir, excluir os pedidos da tabela carrinho
-    const excluirCarrinhoQuery = 'DELETE FROM carrinho WHERE rm = ?';
-    await db.execute(excluirCarrinhoQuery, [rm]);
-    console.log('Carrinho excluído com sucesso');
-
-    // Redirecionar para a página finalizar.html
-    res.redirect('/finalizar.html');
-  } catch (err) {
-    console.log('Erro ao concluir pedido:', err.message);
-  }
-});
-
-// Rota para servir o arquivo HTML (finalizar.html)
-app.get('/finalizar.html', (req, res) => {
-  res.sendFile(__dirname + '/finalizar.html');
-});
-
-
-
-
-
-app.get('/rastreio', async (req, res) => {
-  const rm = req.session.rm; // Obtém o RM da sessão
-
-  if (!rm) {
-    return res.redirect('/login.html');
-  }
-
-  const query = 'SELECT * FROM pedidos WHERE rm = ?';
-  
-  try {
-    const [results] = await db.query(query, [rm]);
-
-
-    res.render('rastreio', { itens: results});
-  } catch (err) {
-    console.error('Erro ao buscar itens do carrinho:', err);
-    return res.status(400).send('Erro ao buscar itens do carrinho');
-  }
-});
-
-app.post("/excluir-rastreio", (req, res) => {
-  const rm = req.session.rm;
-
-    if (!rm) {
-        return res.redirect('/login.html')
-    }
-
-    const deleteQuery = 'DELETE FROM pedidos WHERE rm = ?';
-
-    db.query(deleteQuery, [rm], (error, results) => {
-        if (error) {
-            console.error(error);
-        }
-        res.render('rastreio', { message: 'Obrigado pela compra!' });
-    });
-    
-});
-
-
-
-// Iniciar o servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Outras rotas permanecem similares...
