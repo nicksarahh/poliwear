@@ -17,8 +17,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const sessionStore = new MySQLStore(db);
-
 // Conexão com o banco de dados MySQL
 const db = mysql.createPool({
   host: process.env.DB_HOST,
@@ -34,6 +32,8 @@ const db = mysql.createPool({
 db.getConnection()
   .then(() => console.log('Conexão com o banco estabelecida.'))
   .catch((err) => console.error('Falha na conexão com o banco:', err));
+
+const sessionStore = new MySQLStore(db);
 
 app.use(session({
   key: 'sessao_cookie',
