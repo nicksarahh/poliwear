@@ -90,6 +90,7 @@ app.post('/cadastro', async (req, res) => {
 
     console.log('Usuário cadastrado com ID:', result.insertId); // Log para ver o ID gerado
     return res.status(200).send('Usuário cadastrado com sucesso!');
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err.message); // Inclua o detalhe do erro
     return res.status(500).send('Erro no servidor!');
@@ -142,33 +143,40 @@ app.get('/telainicial.html', (req, res) => {
 });
 
 // Rota para o perfil do usuário
-app.get('/perfil', async (req, res) => {
+app.get('/perfil', (req, res) => {
   if (!req.session.loggedin) {
-    return res.redirect('/login.html'); // Redirecionar se o usuário não estiver logado
+    return res.status(401).json({ error: 'Usuário não autenticado' });
   }
 
-  try {
-    // Buscar o usuário no banco de dados baseado no RM armazenado na sessão
-    const [rows] = await db.query('SELECT rm, turma, prim_nome, ult_nome, email, imagem_perfil FROM usuarios WHERE rm = ?', [req.session.rm]);
+  const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
+  const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
 
-    if (rows.length === 0) {
-      return res.status(400).send('Usuário não encontrado!');
+  db.query(query, [rm], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
     }
 
-    // Enviar os dados do usuário para a página de perfil (exceto senha)
-    const usuario = rows[0];
-    res.json({
-      rm: usuario.rm,
-      nome_completo: `${usuario.prim_nome} ${usuario.ult_nome}`, // Concatenando primeiro e último nome
-      turma: usuario.turma,
-      email: usuario.email,
-      imagem_perfil: usuario.imagem_perfil ? usuario.imagem_perfil.toString('base64') : null // Converter imagem para base64
-    });
-  } catch (err) {
-    console.error('Erro ao buscar dados do perfil:', err);
-    return res.status(500).send('Erro no servidor!');
-  }
+    if (results.length > 0) {
+      const user = results[0];
+      // Converte a imagem (LONGBLOB) em Base64
+      let imagemBase64 = null;
+      if (user.imagem_perfil) {
+        imagemBase64 = user.imagem_perfil.toString('base64');
+      }
+
+      res.json({
+        rm: user.rm,
+        nome_completo: user.nome_completo,
+        turma: user.turma,
+        email: user.email,
+        imagem_perfil: imagemBase64, // Inclui a imagem como Base64
+      });
+    } else {
+      res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+  });
 });
+
 
 // Rota para upload de imagem de perfil
 app.post('/upload', upload.single('file'), async (req, res) => {

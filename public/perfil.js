@@ -33,7 +33,33 @@ function clique_status(){
     window.location.href = "/rastreio";
 }
 
-
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const response = await fetch('/perfil');
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os dados do usuário');
+      }
+  
+      const data = await response.json();
+  
+      // Preencher os dados na página HTML
+      document.getElementById('rm').textContent = data.rm;
+      document.getElementById('nome_completo').textContent = data.nome_completo;
+      document.getElementById('turma').textContent = data.turma;
+      document.getElementById('email').textContent = data.email;
+  
+      // Mostrar a imagem de perfil se estiver disponível
+      const imagemPerfil = document.getElementById('imagemPerfil');
+      if (data.imagem_perfil) {
+        imagemPerfil.src = `data:image/jpeg;base64,${data.imagem_perfil}`;
+      } else {
+        imagemPerfil.src = 'imagens/profile.jpg'; // Substitua pelo caminho da imagem padrão
+      }
+    } catch (error) {
+      console.error(error.message);
+      alert('Erro ao carregar os dados do perfil.');
+    }
+  });
 
 document.addEventListener('DOMContentLoaded', function() {
     // Carregar os dados do perfil ao carregar a página

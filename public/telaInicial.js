@@ -25,7 +25,7 @@ function fetchUserName() {
             if (response.ok) {
                 return response.json(); // Converte a resposta para JSON
             } else {
-                throw new Error('Erro ao buscar nome do usuário');
+                console.log('Erro ao buscar nome do usuário');
             }
         })
         .then(data => {
