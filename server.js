@@ -16,14 +16,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-  key: 'sessao_cookie',
-  secret: 'as-tapadas',
-  store: sessionStore,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false } // Use true em produção com HTTPS
-}));
+// Configuração de sessão
+app.use(
+  session({
+    secret: 'as-tapadas',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Somente cookies seguros em produção
+      httpOnly: true, // Evita acesso via JavaScript
+    },
+  })
+);
 
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
