@@ -45,7 +45,6 @@ app.use(session({
 }));
 
 
-
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
   if (!req.session.loggedin) {
@@ -146,7 +145,7 @@ app.get('/telainicial.html', (req, res) => {
 });
 
 // Rota para o perfil do usuário
-app.get('/perfil', (req, res) => {
+app.get('/perfil', authMiddleware, (req, res) => {
   if (!req.session.loggedin) {
     return res.status(401).json({ error: 'Usuário não autenticado' });
   }
