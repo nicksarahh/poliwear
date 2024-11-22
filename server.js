@@ -17,7 +17,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const sessionStore = new MySQLStore(db);
+// Conexão com o banco de dados MySQL
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
+// Teste de conexão
+db.getConnection()
+  .then(() => console.log('Conexão com o banco estabelecida.'))
+  .catch((err) => console.error('Falha na conexão com o banco:', err));
+
+  const sessionStore = new MySQLStore(db);
 
 app.use(session({
   key: 'sessao_cookie',
@@ -42,21 +58,7 @@ function authMiddleware(req, res, next) {
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Conexão com o banco de dados MySQL
-const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
 
-// Teste de conexão
-db.getConnection()
-  .then(() => console.log('Conexão com o banco estabelecida.'))
-  .catch((err) => console.error('Falha na conexão com o banco:', err));
 
 // Rota para a página de login
 app.get('/', (req, res) => {
