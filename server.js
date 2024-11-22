@@ -143,39 +143,58 @@ app.get('/telainicial.html', (req, res) => {
 });
 
 // Rota para o perfil do usuário
-app.get('/perfil', (req, res) => {
-  if (!req.session.loggedin) {
-    return res.status(401).json({ error: 'Usuário não autenticado' });
-  }
+// app.get('/perfil', (req, res) => {
+//   if (!req.session.loggedin) {
+//     return res.status(401).json({ error: 'Usuário não autenticado' });
+//   }
 
-  const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
-  const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
+//   const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
+//   const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
+
+//   db.query(query, [rm], (err, results) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
+//     }
+
+//     if (results.length > 0) {
+//       const user = results[0];
+//       // Converte a imagem (LONGBLOB) em Base64
+//       let imagemBase64 = null;
+//       if (user.imagem_perfil) {
+//         imagemBase64 = user.imagem_perfil.toString('base64');
+//       }
+
+//       res.json({
+//         rm: user.rm,
+//         nome_completo: user.nome_completo,
+//         turma: user.turma,
+//         email: user.email,
+//         imagem_perfil: imagemBase64, // Inclui a imagem como Base64
+//       });
+//     } else {
+//       res.status(404).json({ error: 'Usuário não encontrado' });
+//     }
+//   });
+// });
+
+app.get('/perfil', (req, res) => {
+  const rm = req.session.rm; // Assumindo que o RM do usuário está na sessão
+  const query = 'SELECT rm, nome_completo, email, turma FROM usuarios WHERE rm = ?';
 
   db.query(query, [rm], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
-    }
-
-    if (results.length > 0) {
-      const user = results[0];
-      // Converte a imagem (LONGBLOB) em Base64
-      let imagemBase64 = null;
-      if (user.imagem_perfil) {
-        imagemBase64 = user.imagem_perfil.toString('base64');
+      if (err) {
+          console.error('Erro ao buscar dados do perfil:', err);
+          return res.status(500).json({ error: 'Erro no servidor' });
       }
 
-      res.json({
-        rm: user.rm,
-        nome_completo: user.nome_completo,
-        turma: user.turma,
-        email: user.email,
-        imagem_perfil: imagemBase64, // Inclui a imagem como Base64
-      });
-    } else {
-      res.status(404).json({ error: 'Usuário não encontrado' });
-    }
+      if (results.length === 0) {
+          return res.status(404).json({ error: 'Usuário não encontrado' });
+      }
+
+      res.json(results[0]);
   });
 });
+
 
 
 // Rota para upload de imagem de perfil
