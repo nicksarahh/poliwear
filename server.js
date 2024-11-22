@@ -4,6 +4,7 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const { body, validationResult } = require('express-validator'); // Para validação
 
@@ -16,18 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuração de sessão
-app.use(
-  session({
-    secret: 'as-tapadas',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // Somente cookies seguros em produção
-      httpOnly: true, // Evita acesso via JavaScript
-    },
-  })
-);
+app.use(session({
+  key: 'sessao_cookie',
+  secret: 'as-tapadas',
+  store: MySQLStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Use true em produção com HTTPS
+}));
 
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
