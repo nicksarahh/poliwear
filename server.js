@@ -17,8 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const storageMulter = multer.memoryStorage();
-
+const sessionStore = new MySQLStore(db);
 
 app.use(session({
   key: 'sessao_cookie',
@@ -29,7 +28,7 @@ app.use(session({
   cookie: { secure: false } // Use true em produção com HTTPS
 }));
 
-const sessionStore = new MySQLStore(db);
+
 
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
@@ -40,7 +39,8 @@ function authMiddleware(req, res, next) {
 }
 
 // Configuração do Multer para upload de arquivos
-const upload = multer({ storageMulter });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // Conexão com o banco de dados MySQL
 const db = mysql.createPool({
