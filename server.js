@@ -4,6 +4,7 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const { body, validationResult } = require('express-validator'); // Para validação
 
@@ -16,18 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuração de sessão
-app.use(
-  session({
-    secret: 'as-tapadas',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // Somente cookies seguros em produção
-      httpOnly: true, // Evita acesso via JavaScript
-    },
-  })
-);
+app.use(session({
+  key: 'sessao_cookie',
+  secret: 'as-tapadas',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Use true em produção com HTTPS
+}));
 
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
@@ -143,58 +140,39 @@ app.get('/telainicial.html', (req, res) => {
 });
 
 // Rota para o perfil do usuário
-// app.get('/perfil', (req, res) => {
-//   if (!req.session.loggedin) {
-//     return res.status(401).json({ error: 'Usuário não autenticado' });
-//   }
-
-//   const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
-//   const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
-
-//   db.query(query, [rm], (err, results) => {
-//     if (err) {
-//       return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
-//     }
-
-//     if (results.length > 0) {
-//       const user = results[0];
-//       // Converte a imagem (LONGBLOB) em Base64
-//       let imagemBase64 = null;
-//       if (user.imagem_perfil) {
-//         imagemBase64 = user.imagem_perfil.toString('base64');
-//       }
-
-//       res.json({
-//         rm: user.rm,
-//         nome_completo: user.nome_completo,
-//         turma: user.turma,
-//         email: user.email,
-//         imagem_perfil: imagemBase64, // Inclui a imagem como Base64
-//       });
-//     } else {
-//       res.status(404).json({ error: 'Usuário não encontrado' });
-//     }
-//   });
-// });
-
 app.get('/perfil', (req, res) => {
-  const rm = req.session.rm; // Assumindo que o RM do usuário está na sessão
-  const query = 'SELECT rm, nome_completo, email, turma FROM usuarios WHERE rm = ?';
+  if (!req.session.loggedin) {
+    return res.status(401).json({ error: 'Usuário não autenticado' });
+  }
+
+  const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
+  const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
 
   db.query(query, [rm], (err, results) => {
-      if (err) {
-          console.error('Erro ao buscar dados do perfil:', err);
-          return res.status(500).json({ error: 'Erro no servidor' });
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
+    }
+
+    if (results.length > 0) {
+      const user = results[0];
+      // Converte a imagem (LONGBLOB) em Base64
+      let imagemBase64 = null;
+      if (user.imagem_perfil) {
+        imagemBase64 = user.imagem_perfil.toString('base64');
       }
 
-      if (results.length === 0) {
-          return res.status(404).json({ error: 'Usuário não encontrado' });
-      }
-
-      res.json(results[0]);
+      res.json({
+        rm: user.rm,
+        nome_completo: user.nome_completo,
+        turma: user.turma,
+        email: user.email,
+        imagem_perfil: imagemBase64, // Inclui a imagem como Base64
+      });
+    } else {
+      res.status(404).json({ error: 'Usuário não encontrado' });
+    }
   });
 });
-
 
 
 // Rota para upload de imagem de perfil
