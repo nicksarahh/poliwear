@@ -20,11 +20,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   key: 'sessao_cookie',
   secret: 'as-tapadas',
-  store: MySQLStore,
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false } // Use true em produção com HTTPS
 }));
+
+const sessionStore = new MySQLStore(db);
 
 // Middleware para verificar autenticação
 function authMiddleware(req, res, next) {
