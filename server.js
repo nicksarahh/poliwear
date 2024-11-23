@@ -151,7 +151,7 @@ app.get('/perfil', authMiddleware, (req, res) => {
   }
 
   const rm = req.session.rm; // Assumindo que o RM do usuário está salvo na sessão
-  const query = 'SELECT rm, nome_completo, turma, email FROM usuarios WHERE rm = ?';
+  const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
 
   db.query(query, [rm], (err, results) => {
     if (err) {
@@ -160,12 +160,18 @@ app.get('/perfil', authMiddleware, (req, res) => {
 
     if (results.length > 0) {
       const user = results[0];
+      // Converte a imagem (LONGBLOB) em Base64
+      let imagemBase64 = null;
+      if (user.imagem_perfil) {
+        imagemBase64 = user.imagem_perfil.toString('base64');
+      }
 
       res.json({
         rm: user.rm,
         nome_completo: user.nome_completo,
         turma: user.turma,
-        email: user.email
+        email: user.email,
+        imagem_perfil: imagemBase64, // Inclui a imagem como Base64
       });
     } else {
       res.status(404).json({ error: 'Usuário não encontrado' });
@@ -173,6 +179,20 @@ app.get('/perfil', authMiddleware, (req, res) => {
   });
 });
 
+
+// Rota para upload de imagem de perfil
+app.post('/upload', upload.single('file'), async (req, res) => {
+  const imagem = req.file.buffer;
+  const rm = req.session.rm; // RM do usuário logado
+
+  try {
+      await db.query('UPDATE usuarios SET imagem_perfil = ? WHERE rm = ?', [imagem, rm]);
+      res.json({ message: 'Imagem salva com sucesso!' });
+  } catch (err) {
+      console.error('Erro ao salvar a imagem:', err);
+      res.status(500).json({ message: 'Erro ao salvar a imagem.' });
+  }
+});
 
 // Rota para obter dados do usuário
 app.get('/getUser', (req, res) => {
