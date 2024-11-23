@@ -24,6 +24,9 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
   port: process.env.DB_PORT,
+  ssl: {
+    ca: fs.readFileSync('db_ca\isrgrootx1.pem'),  // Caminho para o arquivo de certificado CA
+  },
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
