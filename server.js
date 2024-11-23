@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
@@ -27,6 +27,11 @@ const db = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 });
+
+// Teste de conexão
+db.getConnection()
+  .then(() => console.log('Conexão com o banco estabelecida.'))
+  .catch((err) => console.error('Falha na conexão com o banco:', err));
 
 const sessionStore = new MySQLStore(db);
 
