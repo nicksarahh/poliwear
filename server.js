@@ -34,6 +34,13 @@ db.getConnection()
   .then(() => console.log('Conexão com o banco estabelecida.'))
   .catch((err) => console.error('Falha na conexão com o banco:', err));
 
+  console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USERNAME:', process.env.DB_USERNAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_DBNAME:', process.env.DB_DBNAME);
+console.log('DB_PORT:', process.env.DB_PORT);
+
+
 const sessionStore = new MySQLStore(db);
 
 app.use(session({
