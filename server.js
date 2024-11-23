@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
