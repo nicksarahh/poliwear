@@ -26,12 +26,7 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-}).promise();
-
-// Teste de conexão
-db.getConnection()
-  .then(() => console.log('Conexão com o banco estabelecida.'))
-  .catch((err) => console.error('Falha na conexão com o banco:', err));
+});
 
 const sessionStore = new MySQLStore(db);
 
