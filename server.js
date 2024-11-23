@@ -26,7 +26,7 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-});
+}).promise();
 
 // Teste de conexão
 db.getConnection()
