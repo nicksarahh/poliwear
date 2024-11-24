@@ -131,7 +131,7 @@ app.get('/perfil', authMiddleware, (req, res) => {
       const imagemBase64 = user.imagem_perfil ? user.imagem_perfil.toString('base64') : null;
       res.json({
         rm: user.rm,
-        nome_completo: user.nome_completo,
+        nome_completo: `${usuario.prim_nome} ${usuario.ult_nome}`,
         turma: user.turma,
         email: user.email,
         imagem_perfil: imagemBase64,
