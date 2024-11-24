@@ -120,7 +120,7 @@ app.get('/telainicial.html', (req, res) => {
 });
 
 // Perfil do usuário
-app.get('/perfil', authMiddleware, (req, res) => {
+app.get('/perfil.html', authMiddleware, (req, res) => {
   const rm = req.session.rm;
   const query = 'SELECT rm, prim_nome, Ult_nome, turma, email, imagem FROM usuarios WHERE rm = ?';
 

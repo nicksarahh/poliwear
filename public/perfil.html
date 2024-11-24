@@ -23,37 +23,27 @@
         // Função para carregar os dados do perfil
         async function carregarPerfil() {
           try {
-            // Simulando a resposta de dados, caso a requisição não funcione corretamente
-            const dados = {
-                rm: '123456',
-                nome_completo: 'João da Silva',
-                email: 'joao@exemplo.com',
-                turma: 'Turma A'
-            };
-            
-            // Caso a requisição não funcione, substitua o código acima pela linha abaixo
-            /*
             const response = await fetch('/perfil'); // Requisição à rota /perfil
             if (!response.ok) {
               throw new Error('Erro ao carregar perfil');
             }
             const dados = await response.json(); // Converte a resposta em JSON
-            */
-
-            console.log(dados); // Verifique no console do navegador se os dados estão sendo retornados corretamente
             
+            console.log(dados); // Verifique no console do navegador se os dados estão sendo retornados corretamente
+      
             // Preencher os elementos HTML com os dados do perfil
-            // document.getElementById('rm').textContent = dados.rm;
-            // document.getElementById('nome_completo').textContent = dados.nome_completo;
-            // document.getElementById('email').textContent = dados.email;
-            // document.getElementById('turma').textContent = dados.turma;
+            document.getElementById('rm').textContent = dados.rm;
+            document.getElementById('nome_completo').textContent = dados.nome_completo;
+            document.getElementById('email').textContent = dados.email;
+            document.getElementById('turma').textContent = dados.turma;
           } catch (error) {
             console.error('Erro:', error);
           }
         }
       
         window.onload = carregarPerfil;
-    </script>
+      </script>
+      
 </head>
 
 <body>
@@ -65,21 +55,20 @@
             <a href="/carrinho"><i class="bi bi-cart3" id="carrinho"></i></a>
         </div>
     </header>
-    
     <div class="segunda-part">
         <div class="botoes">
             <div class="upload" onclick="clique()">
-                <label>Upload camiseta</label>
+                <label >Upload camiseta</label>
                 <i class="bi bi-cloud-upload" id="upload-icon"></i>
             </div>
             <div class="cartao" onclick="clique_cartao()">
                 <label id="cartao">Cartões salvos</label>
+
             </div>
             <div class="status" onclick="clique_status()">
                 <label>Status do Pedido</label>
             </div>
         </div>
-        
         <div class="informacoes">
             <div class="dados">
                 <label class="rm"><b>RM:</b><label id="rm">&nbsp;</label></label>
@@ -93,38 +82,41 @@
                 <label for="file" id="uploadbtn"><i class="bi bi-camera"></i></label>
             </div>
         </div>
-        
         <div id="janelaModal">
             <div id="fundo">
                 <span id="btnModal">X</span>
-                <div id="div_mensagem">
-                    <label>Enviado com Sucesso!</label>
-                </div>
-                <form id="uploadForm" action="/uploadImage" method="POST" enctype="multipart/form-data">
-                    <div id="div_upload" for="upload">
-                        <input type="file" id="upload" name="imagem" accept="image/*">
-                        <img src="imagens/upload.png" width="100px" id="img" >
+                    <div id="div_mensagem">
+                        <label>Enviado com Sucesso!</label>
                     </div>
-                </form>
+                    <form id="uploadForm" action="/uploadImage" method="POST" enctype="multipart/form-data">
+                        <div id="div_upload" for="upload">
+                            <input type="file" id="upload" name="imagem" accept="image/*">
+                            <img src="imagens/upload.png" width="100px" id="img" >
+                        </div>
+                    </form>
+                        
                     
-                <div id="btn_enviar" onclick="mensagem()">
-                    Enviar
-                </div>
+                        <div id="btn_enviar" onclick="mensagem()">
+                            Enviar
+                        </div>
+                
             </div>
         </div>
-        
         <div id="aba">
             <div id="fundoPreto">
                 <span id="btnModal_cartao">X</span>
                 <div id="cartao">
                     <div class="cartao1">
                         <img src="imagens/imagemCartão.png" id="img1" width="100px" id="img">
-                        <div id="dadosCartao1"></div>
+                        <div id="dadosCartao1">
+                        </div>
                     </div>
                     <div class="cartao2">
                         <img src="imagens/imagemCartão.png" id="img2" width="100px" id="img">
-                        <div id="dadosCartao2"></div>
+                        <div id="dadosCartao2">
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
