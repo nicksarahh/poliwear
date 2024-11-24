@@ -122,13 +122,13 @@ app.get('/telainicial.html', (req, res) => {
 // Perfil do usuário
 app.get('/perfil', authMiddleware, (req, res) => {
   const rm = req.session.rm;
-  const query = 'SELECT rm, prim_nome, Ult_nome, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
+  const query = 'SELECT rm, prim_nome, Ult_nome, turma, email, imagem FROM usuarios WHERE rm = ?';
 
   db.query(query, [rm], (err, results) => {
     if (err) return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
     if (results.length > 0) {
       const user = results[0];
-      const imagemBase64 = user.imagem_perfil ? user.imagem_perfil.toString('base64') : null;
+      const imagemBase64 = user.imagem ? user.imagem.toString('base64') : null;
       res.json({
         rm: user.rm,
         nome_completo: `${usuario.prim_nome} ${usuario.ult_nome}`,
@@ -148,7 +148,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   const rm = req.session.rm;
 
   try {
-    await db.query('UPDATE usuarios SET imagem_perfil = ? WHERE rm = ?', [imagem, rm]);
+    await db.query('UPDATE usuarios SET imagem = ? WHERE rm = ?', [imagem, rm]);
     res.json({ message: 'Imagem salva com sucesso!' });
   } catch (err) {
     console.error('Erro ao salvar a imagem:', err);
