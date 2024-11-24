@@ -122,7 +122,7 @@ app.get('/telainicial.html', (req, res) => {
 // Perfil do usuário
 app.get('/perfil', authMiddleware, (req, res) => {
   const rm = req.session.rm;
-  const query = 'SELECT rm, nome_completo, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
+  const query = 'SELECT rm, prim_nome, Ult_nome, turma, email, imagem_perfil FROM usuarios WHERE rm = ?';
 
   db.query(query, [rm], (err, results) => {
     if (err) return res.status(500).json({ error: 'Erro ao buscar os dados do usuário' });
