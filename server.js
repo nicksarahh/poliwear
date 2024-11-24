@@ -1,4 +1,3 @@
-// Dependências necessárias
 const express = require('express');
 const mysql = require('mysql2/promise');
 const multer = require('multer');
@@ -7,7 +6,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
-const { body, validationResult } = require('express-validator');
 
 const app = express();
 
@@ -35,26 +33,26 @@ db.getConnection()
   .then(() => console.log('Conexão com o banco estabelecida.'))
   .catch(err => console.error('Falha na conexão com o banco:', err));
 
-// Configuração de opções para a sessão
-const sessionOptions = {
-  host: process.env.DB_HOST,
+// Configuração do MySQLStore para sessões
+const options = {
+  connectionLimit: 10, // Número máximo de conexões simultâneas
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
-  port: process.env.DB_PORT,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT
 };
 
-// Criando o store para sessões com MySQL
-const sessionStore = new MySQLStore(sessionOptions);
+const sessionStore = new MySQLStore(options, db);
 
 // Configurando o middleware de sessão
 app.use(session({
   key: 'session_cookie_name',
-  secret: 'as-tapadas', // Substitua por uma chave secreta mais segura em produção
+  secret: 'as-tapadas',
   store: sessionStore,
   resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 60000 } // 1 minuto para teste
+  saveUninitialized: true,  // Salvar sessões não inicializadas
+  cookie: { maxAge: 60000 } // Tempo de expiração da sessão
 }));
 
 // Middleware de autenticação
@@ -68,8 +66,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Rotas da aplicação
-
-// Página inicial (login)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
@@ -110,10 +106,7 @@ app.post('/login', async (req, res) => {
     req.session.loggedin = true;
     req.session.firstName = usuario.prim_nome;
     req.session.rm = usuario.rm;
-    req.session.save(err => {
-      if (err) return res.status(500).send('Erro ao salvar a sessão!');
-      res.redirect('/telainicial.html');
-    });
+    res.redirect('/telainicial.html');
   } catch (err) {
     console.error('Erro ao fazer login:', err);
     res.status(500).send('Erro no servidor!');
@@ -199,6 +192,107 @@ app.get('/carrinho', async (req, res) => {
     res.status(500).send('Erro ao buscar itens do carrinho');
   }
 });
+
+app.post('/remover-produto', async (req, res) => {
+  const produtoId = req.body.produto_id;
+
+  try {
+    const [result] = await db.query('DELETE FROM carrinho WHERE id = ?', [produtoId]);
+
+    if (result.affectedRows === 0) {
+      console.log('Produto não encontrado no carrinho!');
+    }
+
+    console.log('Produto excluído com sucesso:', produtoId);
+    res.redirect('/carrinho'); // Redireciona para a página do carrinho após a exclusão
+  } catch (err) {
+    console.error('Erro ao excluir produto:', err);
+    return res.status(500).send('Erro no servidor!');
+  }
+});
+
+
+
+app.post('/concluirPedido', async (req, res) => {
+  const rm = req.session.rm;  // Supondo que o RM do usuário esteja na sessão
+
+  if (!rm) {
+    return res.redirect('/login.html')
+  }
+
+  try {
+    // Inserir os pedidos na tabela pedidos primeiro
+    const inserirPedidosQuery = `
+      INSERT INTO pedidos (rm, titulo, preco, tamanho, cor, quantidade, imagem)
+      SELECT rm, titulo, preco, tamanho, cor, quantidade, imagem
+      FROM carrinho
+      WHERE rm = ?`;
+
+    console.log('Inserindo pedidos para RM:', rm);
+
+    // Executando a inserção com await
+    await db.execute(inserirPedidosQuery, [rm]);
+    console.log('Pedidos inseridos com sucesso');
+
+    // Após inserir, excluir os pedidos da tabela carrinho
+    const excluirCarrinhoQuery = 'DELETE FROM carrinho WHERE rm = ?';
+    await db.execute(excluirCarrinhoQuery, [rm]);
+    console.log('Carrinho excluído com sucesso');
+
+    // Redirecionar para a página finalizar.html
+    res.redirect('/finalizar.html');
+  } catch (err) {
+    console.log('Erro ao concluir pedido:', err.message);
+  }
+});
+
+// Rota para servir o arquivo HTML (finalizar.html)
+app.get('/finalizar.html', (req, res) => {
+  res.sendFile(__dirname + '/finalizar.html');
+});
+
+
+
+
+
+app.get('/rastreio', async (req, res) => {
+  const rm = req.session.rm; // Obtém o RM da sessão
+
+  if (!rm) {
+    return res.redirect('/login.html');
+  }
+
+  const query = 'SELECT * FROM pedidos WHERE rm = ?';
+  
+  try {
+    const [results] = await db.query(query, [rm]);
+
+
+    res.render('rastreio', { itens: results});
+  } catch (err) {
+    console.error('Erro ao buscar itens do carrinho:', err);
+    return res.status(400).send('Erro ao buscar itens do carrinho');
+  }
+});
+
+app.post("/excluir-rastreio", (req, res) => {
+  const rm = req.session.rm;
+
+    if (!rm) {
+        return res.redirect('/login.html')
+    }
+
+    const deleteQuery = 'DELETE FROM pedidos WHERE rm = ?';
+
+    db.query(deleteQuery, [rm], (error, results) => {
+        if (error) {
+            console.error(error);
+        }
+        res.render('rastreio', { message: 'Obrigado pela compra!' });
+    });
+    
+});
+
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
