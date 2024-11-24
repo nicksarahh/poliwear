@@ -5,7 +5,7 @@ const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(require('mysql2'));
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const { body, validationResult } = require('express-validator');
 
