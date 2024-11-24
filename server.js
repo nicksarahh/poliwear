@@ -100,10 +100,10 @@ app.post('/cadastro', async (req, res) => {
       'INSERT INTO usuarios (rm, turma, prim_nome, ult_nome, email, senha) VALUES (?, ?, ?, ?, ?, ?)',
       [rm, turma, prim_nome, ult_nome, email, hashedPassword]
     );
-
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
     console.log('Usuário cadastrado com ID:', result.insertId); // Log para ver o ID gerado
     return res.status(200).send('Usuário cadastrado com sucesso!');
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err.message); // Inclua o detalhe do erro
     return res.status(500).send('Erro no servidor!');
