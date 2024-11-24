@@ -35,15 +35,26 @@ db.getConnection()
   .then(() => console.log('Conexão com o banco estabelecida.'))
   .catch(err => console.error('Falha na conexão com o banco:', err));
 
-// Configuração da sessão
-const sessionStore = new MySQLStore(db);
+// Configuração de opções para a sessão
+const sessionOptions = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
+  port: process.env.DB_PORT,
+};
+
+// Criando o store para sessões com MySQL
+const sessionStore = new MySQLStore(sessionOptions);
+
+// Configurando o middleware de sessão
 app.use(session({
-  key: 'sessao_usuario',
-  secret: 'as-tapadas',
+  key: 'session_cookie_name',
+  secret: 'as-tapadas', // Substitua por uma chave secreta mais segura em produção
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 * 24 }
+  cookie: { maxAge: 60000 } // 1 minuto para teste
 }));
 
 // Middleware de autenticação
@@ -163,6 +174,7 @@ app.post('/adicionarCarrinho', async (req, res) => {
     await db.query(
       `INSERT INTO carrinho (titulo, preco, tamanho, cor, quantidade, rm, imagem, nome_camiseta, num_camiseta) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+
       [titulo, preco, tamanho, cor, quantidade, rm, imagem, nome_camiseta, num_camiseta]
     );
     res.status(200).send('Produto adicionado ao carrinho com sucesso!');
@@ -187,8 +199,6 @@ app.get('/carrinho', async (req, res) => {
     res.status(500).send('Erro ao buscar itens do carrinho');
   }
 });
-
-// Outras rotas omitidas por questões de espaço...
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
